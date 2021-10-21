@@ -1,4 +1,11 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import axios from 'axios';
+
+dotenv.config();
+
+const STEAM_API_KEY = process.env.STEAM_API_KEY;
+const baseURL = `https://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001?key=${STEAM_API_KEY}`;
 
 const app = express();
 
@@ -13,9 +20,29 @@ app.get('/resolve', async (req, res) => {
       .send('Please provide the vanityurl parameter for this method.');
   }
 
-  const steam64id = 1; // TODO get the id
+  const requestURL = `${baseURL}&vanityurl=${vanityUrl}`;
 
-  res.send({ steam64id });
+  try {
+    const response = await axios.get(requestURL);
+    const { success, steamid, message } = (response.data as Response).response;
+
+    if (success === 42) {
+      res.status(400).send(message);
+    }
+
+    res.send({ steam64id: steamid });
+  } catch (error) {
+    res.status(500).send('Internal Error');
+    console.error(error);
+  }
 });
 
 app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+
+interface Response {
+  response: {
+    success: 1 | 42;
+    steamid?: string;
+    message?: string;
+  };
+}
