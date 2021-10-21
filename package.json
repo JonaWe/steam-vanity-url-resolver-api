@@ -1,0 +1,17 @@
+{
+  "name": "steam-vanity-url-resolver-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jona Wessendorf",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && node build",
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.2",
+    "nodemon": "^2.0.14",
+    "ts-node": "^10.3.1",
+    "typescript": "^4.4.4"
+  }
+}
