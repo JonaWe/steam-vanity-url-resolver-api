@@ -5,7 +5,8 @@
   "author": "Jona Wessendorf",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node build",
+    "start": "node build",
+    "postinstall": "tsc",
     "dev": "nodemon"
   },
   "devDependencies": {
