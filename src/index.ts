@@ -38,7 +38,7 @@ app.get('/resolve', async (req, res) => {
     const { success, steamid, message } = (response.data as Response).response;
 
     if (success === 42) {
-      res.status(400).send(message);
+      return res.status(400).send(message);
     }
 
     res.send({ steam64id: steamid });
