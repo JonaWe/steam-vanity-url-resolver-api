@@ -1,7 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import rateLimit from 'express-rate-limit';
 
+// loading the .env file for development
 dotenv.config();
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
@@ -10,6 +12,15 @@ const baseURL = `https://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001?
 const app = express();
 
 const PORT = process.env.PORT || 5000;
+
+// Setting the rate limit
+const rateLimiter = rateLimit({
+  windowMs: 5 * 50 * 1000, // 5 minutes
+  max: 25,
+});
+
+app.use(rateLimiter);
+app.set('trust proxy', 1);
 
 app.get('/resolve', async (req, res) => {
   const vanityUrl = req.query.vanityurl;
